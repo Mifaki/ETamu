@@ -115,35 +115,35 @@
             <ul id="dropdown-master" class="hidden py-2 space-y-2">
               <li>
                 <a
-                  href="#"
+                  href={{  route('dashboard.users.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Managment User</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href={{  route('dashboard.regional-devices.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Perangkat Daerah</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href={{ route('dashboard.guest-categories.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Kategori Tamu</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href={{  route('dashboard.guest-purposes.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Keperluan Tamu</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href={{  route('dashboard.field-purposes.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Tujuan Bidang</a
                 >
@@ -178,14 +178,14 @@
             <ul id="dropdown-operator" class="hidden py-2 space-y-2">
               <li>
                 <a
-                  href="#"
+                  href={{ route('dashboard.questionnaire.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Data Questioner</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href={{ route('dashboard.guest.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
                   >Data Tamu</a
                 >
@@ -193,7 +193,6 @@
             </ul>
           </li>
 
-          <!-- Logout -->
           <li>
             <form action="{{ route('dashboard.index') }}" method="POST">
                 @csrf
