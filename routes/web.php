@@ -14,6 +14,10 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
 Route::prefix('reservation')->group(function () {
     Route::get('/', function () {
         return view('reservation.index');
