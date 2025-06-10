@@ -25,13 +25,13 @@
                     <a href="{{ route('home') }}" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">Beranda</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">Jadwal</a>
+                    <a href="{{ route(name: 'schedule') }}" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">Jadwal</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">Reservasi</a>
+                    <a href="{{ route(name: 'reservation.index') }}" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">Reservasi</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">FAQ</a>
+                    <a href="{{ route('faq') }}" class="nav-link block py-2 px-3 rounded text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-medium active:text-blue-600 dark:active:text-blue-400 active:font-semibold">FAQ</a>
                 </li>
                 <li class="mt-4 md:mt-0">
                     <a href="#" class="py-2 px-5 md:ml-8 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out hover:bg-blue-500 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700 dark:bg-white dark:text-blue-600">Login</a>

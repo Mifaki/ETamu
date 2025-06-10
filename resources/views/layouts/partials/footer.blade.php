@@ -16,10 +16,10 @@
                 <div class="mx-0 md:mx-4">
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Menu</h2>
                     <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                        <li class="mb-4"><a href="#" class="hover:underline">Jadwal</a></li>
+                        <li class="mb-4"><a href="{{ route(name: 'schedule') }}" class="hover:underline">Jadwal</a></li>
                         <li class="mb-4"><a href="{{ route('home') }}" class="hover:underline">Beranda</a></li>
-                        <li class="mb-4"><a href="#" class="hover:underline">Reservasi</a></li>
-                        <li class="mb-4"><a href="#" class="hover:underline">Faq</a></li>
+                        <li class="mb-4"><a href="{{ route(name: 'reservation.index') }}">Reservasi</a></li>
+                        <li class="mb-4"><a href="{{ route('faq') }}" class="hover:underline">Faq</a></li>
                     </ul>
                 </div>
                 <div class="mx-0 md:mx-4">
