@@ -38,3 +38,9 @@ Route::prefix('reservation')->group(function () {
     Route::post('/{id}/questionnaire', function ($id) {
     })->name('reservation.questionnaire.submit');
 });
+
+Route::prefix('/dashboard')->group(function () {
+    Route::get('/', function () {
+        return view('dashboard.index');
+    })->name('dashboard.index');
+});
