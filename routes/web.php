@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,25 +21,20 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::prefix('reservation')->group(function () {
-    Route::get('/', function () {
-        return view('reservation.index');
-    })->name('reservation.index');
+    Route::get('/', [ReservationController::class, 'index'])
+        ->name('reservation.index');
 
-    Route::get('/create', function () {
-        return view('reservation.create');
-    })->name('reservation.create');
+    Route::get('/create', [ReservationController::class, 'create'])
+        ->name('reservation.create');
 
-    Route::post('/store', function () {
-        return redirect()->route('reservation.index')->with('success', 'Reservation created successfully');
-    })->name('reservation.store');
+    Route::post('/store', [ReservationController::class, 'store'])
+        ->name('reservation.store');
 
-    Route::get('/{id}', function ($id) {
-        return view('reservation.show', ['id' => $id]);
-    })->name('reservation.show');
+    Route::get('/{id}', [ReservationController::class, 'show'])
+        ->name('reservation.show');
 
-    Route::get('/{id}/questionnaire', function ($id) {
-        return view('reservation.questionnaire', ['id' => $id]);
-    })->name('reservation.questionnaire');
+    Route::get('/{id}/questionnaire', [ReservationController::class, 'questionnaire'])
+        ->name('reservation.questionnaire');
 
     Route::post('/{id}/questionnaire', function ($id) {
     })->name('reservation.questionnaire.submit');
