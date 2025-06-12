@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,29 +50,23 @@ Route::prefix('/dashboard')->group(function () {
     })->name('dashboard.index');
 
     Route::prefix('/user')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.users.index');
-        })->name('dashboard.users.index');
+        Route::get('/', [UserController::class, 'index'])
+            ->name('dashboard.users.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.users.create');
-        })->name('dashboard.users.create');
+        Route::get('/create', [UserController::class, 'create'])
+            ->name('dashboard.users.create');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.users.edit');
-        })->name('dashboard.users.edit');
+        Route::post('/store', [UserController::class, 'store'])
+            ->name('dashboard.users.store');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.users.index')->with('success', 'User created successfully');
-        })->name('dashboard.users.store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])
+            ->name('dashboard.users.edit');
 
-        Route::put('/update', function () {
-            return redirect()->route('dashboard.users.index')->with('success', 'User edited successfully');
-        })->name('dashboard.users.update');
+        Route::put('/{user}', [UserController::class, 'update'])
+            ->name('dashboard.users.update');
 
-        Route::delete('/delete', function () {
-            return redirect()->route('dashboard.users.index')->with('success', 'User deleted successfully');
-        })->name('dashboard.users.destroy');
+        Route::delete('/{user}', [UserController::class, 'destroy'])
+            ->name('dashboard.users.destroy');
     });
 
     Route::prefix('/regional-devices')->group(function () {
