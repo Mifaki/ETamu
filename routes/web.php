@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\GuestCategoryController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
@@ -92,29 +93,23 @@ Route::prefix('/dashboard')->group(function () {
     });
 
     Route::prefix('/guest-categories')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.guest-categories.index');
-        })->name('dashboard.guest-categories.index');
+        Route::get('/', [GuestCategoryController::class, 'index'])
+            ->name('dashboard.guest-categories.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.guest-categories.create');
-        })->name('dashboard.guest-categories.create');
+        Route::get('/create', [GuestCategoryController::class, 'create'])
+            ->name('dashboard.guest-categories.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.guest-categories.index')->with('success', 'Kategori tamu berhasil ditambahkan');
-        })->name('dashboard.guest-categories.store');
+        Route::post('/store', [GuestCategoryController::class, 'store'])
+            ->name('dashboard.guest-categories.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.guest-categories.edit');
-        })->name('dashboard.guest-categories.edit');
+        Route::get('/{guestCategory}/edit', [GuestCategoryController::class, 'edit'])
+            ->name('dashboard.guest-categories.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.guest-categories.index')->with('success', 'Kategori tamu berhasil diperbarui');
-        })->name('dashboard.guest-categories.update');
+        Route::put('/{guestCategory}', [GuestCategoryController::class, 'update'])
+            ->name('dashboard.guest-categories.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.guest-categories.index')->with('success', 'Kategori tamu berhasil dihapus');
-        })->name('dashboard.guest-categories.destroy');
+        Route::delete('/{guestCategory}', [GuestCategoryController::class, 'destroy'])
+            ->name('dashboard.guest-categories.destroy');
     });
 
     Route::prefix('/guest-purposes')->group(function () {
