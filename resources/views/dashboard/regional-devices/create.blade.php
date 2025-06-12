@@ -3,26 +3,59 @@
 @section('title', 'Tambah Perangkat Daerah - Dashboard')
 
 @section('content')
-<div class="flex items-center justify-center min-h-screen p-6">
-    <div class="w-full max-w-lg bg-white dark:bg-gray-700 shadow-lg rounded-lg p-8">
-        <h1 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-8">
-            Tambah Perangkat Daerah
-        </h1>
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl md:text-5xl font-extrabold text-center text-gray-800 dark:text-white mb-10">
+        Tambah Perangkat Daerah
+    </h1>
 
-        <form action="{{ route('dashboard.regional-devices.store') }}" method="POST">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <form action="{{ route('dashboard.regional-devices.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
+
             <div class="mb-6">
-                <label
-                    for="nama_perangkat_daerah"
-                    class="block text-gray-700 dark:text-gray-200 font-semibold mb-2"
-                >Nama Perangkat Daerah</label>
-                <input
-                    type="text"
-                    id="nama_perangkat_daerah"
-                    name="nama_perangkat_daerah"
-                    required
-                    class="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out hover:shadow-md"
-                />
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Nama Perangkat Daerah
+                </label>
+                <input type="text" name="name" id="name" value="{{ old('name') }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required>
+                @error('name')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-6">
+                <label for="logo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Logo
+                </label>
+                <input type="file" name="logo" id="logo" accept="image/*"
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">PNG, JPG, JPEG atau GIF (Max. 2MB)</p>
+                @error('logo')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-6">
+                <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Alamat
+                </label>
+                <input type="text" name="address" id="address" value="{{ old('address') }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                @error('address')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-6">
+                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Deskripsi
+                </label>
+                <textarea name="description" id="description" rows="4"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ old('description') }}</textarea>
+                @error('description')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="flex justify-end">

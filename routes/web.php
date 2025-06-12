@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -75,29 +76,23 @@ Route::prefix('/dashboard')->group(function () {
     });
 
     Route::prefix('/regional-devices')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.regional-devices.index');
-        })->name('dashboard.regional-devices.index');
+        Route::get('/', [RegionalDeviceController::class, 'index'])
+            ->name('dashboard.regional-devices.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.regional-devices.create');
-        })->name('dashboard.regional-devices.create');
+        Route::get('/create', [RegionalDeviceController::class, 'create'])
+            ->name('dashboard.regional-devices.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.regional-devices.index')->with('success', 'Perangkat daerah berhasil ditambahkan');
-        })->name('dashboard.regional-devices.store');
+        Route::post('/store', [RegionalDeviceController::class, 'store'])
+            ->name('dashboard.regional-devices.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.regional-devices.edit');
-        })->name('dashboard.regional-devices.edit');
+        Route::get('/{regionalDevice}/edit', [RegionalDeviceController::class, 'edit'])
+            ->name('dashboard.regional-devices.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.regional-devices.index')->with('success', 'Perangkat daerah berhasil diperbarui');
-        })->name('dashboard.regional-devices.update');
+        Route::put('/{regionalDevice}', [RegionalDeviceController::class, 'update'])
+            ->name('dashboard.regional-devices.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.regional-devices.index')->with('success', 'Perangkat daerah berhasil dihapus');
-        })->name('dashboard.regional-devices.destroy');
+        Route::delete('/{regionalDevice}', [RegionalDeviceController::class, 'destroy'])
+            ->name('dashboard.regional-devices.destroy');
     });
 
     Route::prefix('/guest-categories')->group(function () {
