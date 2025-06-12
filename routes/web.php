@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
@@ -20,9 +21,9 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('reservation')->group(function () {
     Route::get('/', [ReservationController::class, 'index'])
@@ -44,12 +45,12 @@ Route::prefix('reservation')->group(function () {
     })->name('reservation.questionnaire.submit');
 });
 
-Route::prefix('/dashboard')->group(function () {
+Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(function () {
     Route::get('/', function () {
         return view('dashboard.index');
     })->name('dashboard.index');
 
-    Route::prefix('/user')->group(function () {
+    Route::prefix('/user')->middleware('super.admin')->group(function () {
         Route::get('/', [UserController::class, 'index'])
             ->name('dashboard.users.index');
 
