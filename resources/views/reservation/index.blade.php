@@ -6,132 +6,32 @@
     <section>
         <div class="reserasi-opd h-max mt-28 md:mt-36">
             <div class="card-opd grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6">
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
-
-                <div
-                    class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
-                    <a href="#">
-                        <img class="w-[50%] mx-auto" src="{{ asset('assets/img/logo-kab.png') }}" alt="gambar opd">
-                        <p>Nama Instansi</p>
-                        <p class="text-green-400 font-semibold">jumlah kunjungan</p>
-                    </a>
-                </div>
+                @forelse($regionalDevices as $device)
+                    <div
+                        class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
+                        @if($device->logo_path)
+                            <img class="w-[50%] mx-auto object-contain" src="{{ asset('storage/' . $device->logo_path) }}"
+                                alt="{{ $device->name }}">
+                        @else
+                            <div class="w-[50%] mx-auto h-24 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <span class="text-gray-400">No Logo</span>
+                            </div>
+                        @endif
+                        <p class="mt-2">{{ $device->name }}</p>
+                        @if($device->address)
+                            <p class="text-sm text-gray-600 dark:text-gray-300">{{ Str::limit($device->address, 30) }}</p>
+                        @endif
+                        <p class="text-green-400 font-semibold">0 kunjungan</p>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-gray-500 dark:text-gray-400">Tidak ada perangkat daerah yang tersedia.</p>
+                    </div>
+                @endforelse
             </div>
 
             <nav aria-label="Page navigation" class="flex justify-center mt-7 md:mt-12">
-                <ul class="flex items-center -space-x-px h-8 text-sm">
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only">Previous</span>
-                            <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 1 1 5l4 4" />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only">Next</span>
-                            <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 9 4-4-4-4" />
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
+                {{ $regionalDevices->links('pagination::tailwind') }}
             </nav>
 
             <div class="tagline text-center mt-12 md:mt-16 mb-8 md:mb-16 text-black dark:text-white">

@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Dashboard\FieldPurposeController;
+use App\Http\Controllers\Dashboard\GuestCategoryController;
+use App\Http\Controllers\Dashboard\GuestPurposeController;
+use App\Http\Controllers\Dashboard\RegionalDeviceController;
+use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,25 +25,20 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::prefix('reservation')->group(function () {
-    Route::get('/', function () {
-        return view('reservation.index');
-    })->name('reservation.index');
+    Route::get('/', [ReservationController::class, 'index'])
+        ->name('reservation.index');
 
-    Route::get('/create', function () {
-        return view('reservation.create');
-    })->name('reservation.create');
+    Route::get('/create', [ReservationController::class, 'create'])
+        ->name('reservation.create');
 
-    Route::post('/store', function () {
-        return redirect()->route('reservation.index')->with('success', 'Reservation created successfully');
-    })->name('reservation.store');
+    Route::post('/store', [ReservationController::class, 'store'])
+        ->name('reservation.store');
 
-    Route::get('/{id}', function ($id) {
-        return view('reservation.show', ['id' => $id]);
-    })->name('reservation.show');
+    Route::get('/{id}', [ReservationController::class, 'show'])
+        ->name('reservation.show');
 
-    Route::get('/{id}/questionnaire', function ($id) {
-        return view('reservation.questionnaire', ['id' => $id]);
-    })->name('reservation.questionnaire');
+    Route::get('/{id}/questionnaire', [ReservationController::class, 'questionnaire'])
+        ->name('reservation.questionnaire');
 
     Route::post('/{id}/questionnaire', function ($id) {
     })->name('reservation.questionnaire.submit');
@@ -49,133 +50,103 @@ Route::prefix('/dashboard')->group(function () {
     })->name('dashboard.index');
 
     Route::prefix('/user')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.users.index');
-        })->name('dashboard.users.index');
+        Route::get('/', [UserController::class, 'index'])
+            ->name('dashboard.users.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.users.create');
-        })->name('dashboard.users.create');
+        Route::get('/create', [UserController::class, 'create'])
+            ->name('dashboard.users.create');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.users.edit');
-        })->name('dashboard.users.edit');
+        Route::post('/store', [UserController::class, 'store'])
+            ->name('dashboard.users.store');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.users.index')->with('success', 'User created successfully');
-        })->name('dashboard.users.store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])
+            ->name('dashboard.users.edit');
 
-        Route::put('/update', function () {
-            return redirect()->route('dashboard.users.index')->with('success', 'User edited successfully');
-        })->name('dashboard.users.update');
+        Route::put('/{user}', [UserController::class, 'update'])
+            ->name('dashboard.users.update');
 
-        Route::delete('/delete', function () {
-            return redirect()->route('dashboard.users.index')->with('success', 'User deleted successfully');
-        })->name('dashboard.users.destroy');
+        Route::delete('/{user}', [UserController::class, 'destroy'])
+            ->name('dashboard.users.destroy');
     });
 
     Route::prefix('/regional-devices')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.regional-devices.index');
-        })->name('dashboard.regional-devices.index');
+        Route::get('/', [RegionalDeviceController::class, 'index'])
+            ->name('dashboard.regional-devices.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.regional-devices.create');
-        })->name('dashboard.regional-devices.create');
+        Route::get('/create', [RegionalDeviceController::class, 'create'])
+            ->name('dashboard.regional-devices.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.regional-devices.index')->with('success', 'Perangkat daerah berhasil ditambahkan');
-        })->name('dashboard.regional-devices.store');
+        Route::post('/store', [RegionalDeviceController::class, 'store'])
+            ->name('dashboard.regional-devices.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.regional-devices.edit');
-        })->name('dashboard.regional-devices.edit');
+        Route::get('/{regionalDevice}/edit', [RegionalDeviceController::class, 'edit'])
+            ->name('dashboard.regional-devices.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.regional-devices.index')->with('success', 'Perangkat daerah berhasil diperbarui');
-        })->name('dashboard.regional-devices.update');
+        Route::put('/{regionalDevice}', [RegionalDeviceController::class, 'update'])
+            ->name('dashboard.regional-devices.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.regional-devices.index')->with('success', 'Perangkat daerah berhasil dihapus');
-        })->name('dashboard.regional-devices.destroy');
+        Route::delete('/{regionalDevice}', [RegionalDeviceController::class, 'destroy'])
+            ->name('dashboard.regional-devices.destroy');
     });
 
     Route::prefix('/guest-categories')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.guest-categories.index');
-        })->name('dashboard.guest-categories.index');
+        Route::get('/', [GuestCategoryController::class, 'index'])
+            ->name('dashboard.guest-categories.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.guest-categories.create');
-        })->name('dashboard.guest-categories.create');
+        Route::get('/create', [GuestCategoryController::class, 'create'])
+            ->name('dashboard.guest-categories.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.guest-categories.index')->with('success', 'Kategori tamu berhasil ditambahkan');
-        })->name('dashboard.guest-categories.store');
+        Route::post('/store', [GuestCategoryController::class, 'store'])
+            ->name('dashboard.guest-categories.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.guest-categories.edit');
-        })->name('dashboard.guest-categories.edit');
+        Route::get('/{guestCategory}/edit', [GuestCategoryController::class, 'edit'])
+            ->name('dashboard.guest-categories.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.guest-categories.index')->with('success', 'Kategori tamu berhasil diperbarui');
-        })->name('dashboard.guest-categories.update');
+        Route::put('/{guestCategory}', [GuestCategoryController::class, 'update'])
+            ->name('dashboard.guest-categories.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.guest-categories.index')->with('success', 'Kategori tamu berhasil dihapus');
-        })->name('dashboard.guest-categories.destroy');
+        Route::delete('/{guestCategory}', [GuestCategoryController::class, 'destroy'])
+            ->name('dashboard.guest-categories.destroy');
     });
 
     Route::prefix('/guest-purposes')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.guest-purposes.index');
-        })->name('dashboard.guest-purposes.index');
+        Route::get('/', [GuestPurposeController::class, 'index'])
+            ->name('dashboard.guest-purposes.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.guest-purposes.create');
-        })->name('dashboard.guest-purposes.create');
+        Route::get('/create', [GuestPurposeController::class, 'create'])
+            ->name('dashboard.guest-purposes.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.guest-purposes.index')->with('success', 'Keperluan tamu berhasil ditambahkan');
-        })->name('dashboard.guest-purposes.store');
+        Route::post('/store', [GuestPurposeController::class, 'store'])
+            ->name('dashboard.guest-purposes.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.guest-purposes.edit');
-        })->name('dashboard.guest-purposes.edit');
+        Route::get('/{guestPurpose}/edit', [GuestPurposeController::class, 'edit'])
+            ->name('dashboard.guest-purposes.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.guest-purposes.index')->with('success', 'Keperluan tamu berhasil diperbarui');
-        })->name('dashboard.guest-purposes.update');
+        Route::put('/{guestPurpose}', [GuestPurposeController::class, 'update'])
+            ->name('dashboard.guest-purposes.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.guest-purposes.index')->with('success', 'Keperluan tamu berhasil dihapus');
-        })->name('dashboard.guest-purposes.destroy');
+        Route::delete('/{guestPurpose}', [GuestPurposeController::class, 'destroy'])
+            ->name('dashboard.guest-purposes.destroy');
     });
 
     Route::prefix('/field-purposes')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.field-purposes.index');
-        })->name('dashboard.field-purposes.index');
+        Route::get('/', [FieldPurposeController::class, 'index'])
+            ->name('dashboard.field-purposes.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.field-purposes.create');
-        })->name('dashboard.field-purposes.create');
+        Route::get('/create', [FieldPurposeController::class, 'create'])
+            ->name('dashboard.field-purposes.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.field-purposes.index')->with('success', 'Tujuan bidang berhasil ditambahkan');
-        })->name('dashboard.field-purposes.store');
+        Route::post('/store', [FieldPurposeController::class, 'store'])
+            ->name('dashboard.field-purposes.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.field-purposes.edit');
-        })->name('dashboard.field-purposes.edit');
+        Route::get('/{fieldPurpose}/edit', [FieldPurposeController::class, 'edit'])
+            ->name('dashboard.field-purposes.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.field-purposes.index')->with('success', 'Tujuan bidang berhasil diperbarui');
-        })->name('dashboard.field-purposes.update');
+        Route::put('/{fieldPurpose}', [FieldPurposeController::class, 'update'])
+            ->name('dashboard.field-purposes.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.field-purposes.index')->with('success', 'Tujuan bidang berhasil dihapus');
-        })->name('dashboard.field-purposes.destroy');
+        Route::delete('/{fieldPurpose}', [FieldPurposeController::class, 'destroy'])
+            ->name('dashboard.field-purposes.destroy');
     });
 
     Route::prefix('/questionnaire')->group(function () {
