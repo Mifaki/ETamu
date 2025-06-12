@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\GuestCategoryController;
+use App\Http\Controllers\Dashboard\GuestPurposeController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
@@ -113,29 +114,23 @@ Route::prefix('/dashboard')->group(function () {
     });
 
     Route::prefix('/guest-purposes')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.guest-purposes.index');
-        })->name('dashboard.guest-purposes.index');
+        Route::get('/', [GuestPurposeController::class, 'index'])
+            ->name('dashboard.guest-purposes.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.guest-purposes.create');
-        })->name('dashboard.guest-purposes.create');
+        Route::get('/create', [GuestPurposeController::class, 'create'])
+            ->name('dashboard.guest-purposes.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.guest-purposes.index')->with('success', 'Keperluan tamu berhasil ditambahkan');
-        })->name('dashboard.guest-purposes.store');
+        Route::post('/store', [GuestPurposeController::class, 'store'])
+            ->name('dashboard.guest-purposes.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.guest-purposes.edit');
-        })->name('dashboard.guest-purposes.edit');
+        Route::get('/{guestPurpose}/edit', [GuestPurposeController::class, 'edit'])
+            ->name('dashboard.guest-purposes.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.guest-purposes.index')->with('success', 'Keperluan tamu berhasil diperbarui');
-        })->name('dashboard.guest-purposes.update');
+        Route::put('/{guestPurpose}', [GuestPurposeController::class, 'update'])
+            ->name('dashboard.guest-purposes.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.guest-purposes.index')->with('success', 'Keperluan tamu berhasil dihapus');
-        })->name('dashboard.guest-purposes.destroy');
+        Route::delete('/{guestPurpose}', [GuestPurposeController::class, 'destroy'])
+            ->name('dashboard.guest-purposes.destroy');
     });
 
     Route::prefix('/field-purposes')->group(function () {
