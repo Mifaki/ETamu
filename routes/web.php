@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
@@ -134,29 +135,23 @@ Route::prefix('/dashboard')->group(function () {
     });
 
     Route::prefix('/field-purposes')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.field-purposes.index');
-        })->name('dashboard.field-purposes.index');
+        Route::get('/', [FieldPurposeController::class, 'index'])
+            ->name('dashboard.field-purposes.index');
 
-        Route::get('/create', function () {
-            return view('dashboard.field-purposes.create');
-        })->name('dashboard.field-purposes.create');
+        Route::get('/create', [FieldPurposeController::class, 'create'])
+            ->name('dashboard.field-purposes.create');
 
-        Route::post('/store', function () {
-            return redirect()->route('dashboard.field-purposes.index')->with('success', 'Tujuan bidang berhasil ditambahkan');
-        })->name('dashboard.field-purposes.store');
+        Route::post('/store', [FieldPurposeController::class, 'store'])
+            ->name('dashboard.field-purposes.store');
 
-        Route::get('/{id}/edit', function () {
-            return view('dashboard.field-purposes.edit');
-        })->name('dashboard.field-purposes.edit');
+        Route::get('/{fieldPurpose}/edit', [FieldPurposeController::class, 'edit'])
+            ->name('dashboard.field-purposes.edit');
 
-        Route::put('/{id}', function () {
-            return redirect()->route('dashboard.field-purposes.index')->with('success', 'Tujuan bidang berhasil diperbarui');
-        })->name('dashboard.field-purposes.update');
+        Route::put('/{fieldPurpose}', [FieldPurposeController::class, 'update'])
+            ->name('dashboard.field-purposes.update');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.field-purposes.index')->with('success', 'Tujuan bidang berhasil dihapus');
-        })->name('dashboard.field-purposes.destroy');
+        Route::delete('/{fieldPurpose}', [FieldPurposeController::class, 'destroy'])
+            ->name('dashboard.field-purposes.destroy');
     });
 
     Route::prefix('/questionnaire')->group(function () {
