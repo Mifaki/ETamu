@@ -10,6 +10,7 @@ class Reservation extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'guest_name',
         'guest_category_id',
         'organization',
@@ -30,6 +31,11 @@ class Reservation extends Model
         'meeting_time_start' => 'datetime',
         'meeting_time_end'   => 'datetime',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function guestCategory(): BelongsTo
     {

@@ -49,6 +49,7 @@
                 </li>
                 <li class="mt-4 md:mt-0">
                     @auth
+                        <!-- User is logged in - show dropdown with user info and logout -->
                         <div class="relative inline-block text-left">
                             <button type="button"
                                 class="inline-flex justify-center w-full px-4 py-2 md:ml-8 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out hover:bg-blue-500 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700"
@@ -87,6 +88,7 @@
                             </div>
                         </div>
                     @else
+                        <!-- User is not logged in - show login button -->
                         <a href="{{ route('login') }}"
                             class="py-2 px-5 md:ml-8 bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out hover:bg-blue-500 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700 dark:bg-white dark:text-blue-600">Login</a>
                     @endauth
@@ -102,7 +104,8 @@
         menu.classList.toggle('hidden');
     }
 
-    document.addEventListener('click', function(event) {
+    // Close user menu when clicking outside
+    document.addEventListener('click', function (event) {
         const menu = document.getElementById('user-menu');
         const button = document.getElementById('user-menu-button');
 
