@@ -7,15 +7,14 @@ use App\Http\Controllers\Dashboard\GuestPurposeController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/schedule', function () {
-    return view('schedule');
-})->name('schedule');
+Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 
 Route::get('/faq', function () {
     return view('faq');

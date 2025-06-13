@@ -25,6 +25,8 @@ class Reservation extends Model
         'id_card_path',
         'organization_document_path',
         'notes',
+        'status',
+        'regional_device_id',
     ];
 
     protected $casts = [
@@ -50,5 +52,10 @@ class Reservation extends Model
     public function fieldPurpose(): BelongsTo
     {
         return $this->belongsTo(FieldPurpose::class);
+    }
+
+    public function regionalDevice(): BelongsTo
+    {
+        return $this->belongsTo(RegionalDevice::class);
     }
 }

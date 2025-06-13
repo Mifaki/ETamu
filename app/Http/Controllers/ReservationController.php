@@ -39,8 +39,9 @@ class ReservationController extends Controller
         $guestCategories = GuestCategory::all();
         $guestPurposes   = GuestPurpose::all();
         $fieldPurposes   = FieldPurpose::all();
+        $regionalDevices = RegionalDevice::all();
 
-        return view('reservation.create', compact('guestCategories', 'guestPurposes', 'fieldPurposes'));
+        return view('reservation.create', compact('guestCategories', 'guestPurposes', 'fieldPurposes', 'regionalDevices'));
     }
 
     public function store(Request $request)
@@ -53,6 +54,7 @@ class ReservationController extends Controller
             'phone_number'          => 'required|string|max:20',
             'email'                 => 'required|email|max:255',
             'field_purpose_id'      => 'required|exists:field_purposes,id',
+            'regional_device_id'    => 'required|exists:regional_devices,id',
             'meeting_time_start'    => 'required|date_format:Y-m-d\TH:i',
             'meeting_time_end'      => 'required|date_format:Y-m-d\TH:i|after:meeting_time_start',
             'address'               => 'required|string',
