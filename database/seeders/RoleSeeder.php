@@ -53,7 +53,6 @@ class RoleSeeder extends Seeder
             'view guests',
         ]);
 
-        // Pengunjung gets limited permissions
         $pengunjung->givePermissionTo([
             'view questionnaires',
             'view guests',
