@@ -1,28 +1,30 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
+use App\Http\Controllers\Dashboard\GuestController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
+use App\Http\Controllers\Dashboard\QuestionnaireController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/schedule', function () {
-    return view('schedule');
-})->name('schedule');
+Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('reservation')->group(function () {
     Route::get('/', [ReservationController::class, 'index'])
@@ -40,16 +42,15 @@ Route::prefix('reservation')->group(function () {
     Route::get('/{id}/questionnaire', [ReservationController::class, 'questionnaire'])
         ->name('reservation.questionnaire');
 
-    Route::post('/{id}/questionnaire', function ($id) {
-    })->name('reservation.questionnaire.submit');
+    Route::post('/{id}/questionnaire', [ReservationController::class, 'submitQuestionnaire'])
+        ->name('reservation.questionnaire.submit');
 });
 
-Route::prefix('/dashboard')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    })->name('dashboard.index');
+Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('dashboard.index');
 
-    Route::prefix('/user')->group(function () {
+    Route::prefix('/user')->middleware('super.admin')->group(function () {
         Route::get('/', [UserController::class, 'index'])
             ->name('dashboard.users.index');
 
@@ -150,30 +151,33 @@ Route::prefix('/dashboard')->group(function () {
     });
 
     Route::prefix('/questionnaire')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.questionnaire.index');
-        })->name('dashboard.questionnaire.index');
+        Route::get('/', [QuestionnaireController::class, 'index'])
+            ->name('dashboard.questionnaire.index');
 
-        Route::get('/{id}', function () {
-            return view('dashboard.questionnaire.show');
-        })->name('dashboard.questionnaire.show');
+        Route::get('/{id}', [QuestionnaireController::class, 'show'])
+            ->name('dashboard.questionnaire.show');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.questionnaire.index')->with('success', 'Data kuesioner berhasil dihapus');
-        })->name('dashboard.questionnaire.destroy');
+        Route::delete('/{id}', [QuestionnaireController::class, 'destroy'])
+            ->name('dashboard.questionnaire.destroy');
     });
 
     Route::prefix('/guest')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.guest.index');
-        })->name('dashboard.guest.index');
+        Route::get('/', [GuestController::class, 'index'])
+            ->name('dashboard.guest.index');
 
-        Route::get('/{id}', function () {
-            return view('dashboard.guest.show');
-        })->name('dashboard.guest.show');
+        Route::get('/{id}', [GuestController::class, 'show'])
+            ->name('dashboard.guest.show');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.guest.index')->with('success', 'Data tamu berhasil dihapus');
-        })->name('dashboard.guest.destroy');
+        Route::patch('/{id}/approve', [GuestController::class, 'approve'])
+            ->name('dashboard.guest.approve');
+
+        Route::patch('/{id}/reject', [GuestController::class, 'reject'])
+            ->name('dashboard.guest.reject');
+
+        Route::patch('/{id}/complete', [GuestController::class, 'complete'])
+            ->name('dashboard.guest.complete');
+
+        Route::delete('/{id}', [GuestController::class, 'destroy'])
+            ->name('dashboard.guest.destroy');
     });
 });

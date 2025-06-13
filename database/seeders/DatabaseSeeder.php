@@ -13,6 +13,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
+            RegionalDeviceSeeder::class,
+            GuestCategorySeeder::class,
+            GuestPurposeSeeder::class,
+            FieldPurposeSeeder::class,
+            ReservationSeeder::class,
         ]);
     }
 }
