@@ -77,7 +77,7 @@
                                     Nama</th>
                                 <th
                                     class="py-3 px-4 border-b border-gray-200 text-left text-sm font-medium text-gray-600 dark:text-gray-300 w-[200px]">
-                                    Jenis Reservasi</th>
+                                    Instansi</th>
                                 <th
                                     class="py-3 px-4 border-b border-gray-200 text-left text-sm font-medium text-gray-600 dark:text-gray-300">
                                     Status
@@ -102,13 +102,13 @@
                                     <td class="py-2 px-4 border-b border-gray-200 text-gray-800 dark:text-white">
                                         <span
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        {{ $reservation->status === 'pending'
-                                            ? 'bg-yellow-100 text-yellow-800'
-                                            : ($reservation->status === 'approved'
-                                                ? 'bg-green-100 text-green-800'
-                                                : ($reservation->status === 'rejected'
-                                                    ? 'bg-red-100 text-red-800'
-                                                    : 'bg-gray-100 text-gray-800')) }}">
+                                                                {{ $reservation->status === 'pending'
+                                                                    ? 'bg-yellow-100 text-yellow-800'
+                                                                    : ($reservation->status === 'approved'
+                                                                        ? 'bg-green-100 text-green-800'
+                                                                        : ($reservation->status === 'rejected'
+                                                                            ? 'bg-red-100 text-red-800'
+                                                                            : 'bg-gray-100 text-gray-800')) }}">
                                             {{ ucfirst($reservation->status) }}
                                         </span>
                                     </td>
@@ -118,11 +118,13 @@
                                                 class="text-center text-white bg-green-500 px-8 py-2 rounded-lg md:rounded-full">
                                                 <a href="{{ route('reservation.show', $reservation) }}">Lihat</a>
                                             </button>
-                                            <button
-                                                class="text-center text-white bg-blue-600 px-8 py-2 rounded-lg md:rounded-full">
-                                                <a
-                                                    href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri-nilai</a>
-                                            </button>
+                                            @if ($reservation->status === 'completed')
+                                                <button
+                                                    class="text-center text-white bg-blue-600 px-8 py-2 rounded-lg md:rounded-full">
+                                                    <a
+                                                        href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri-nilai</a>
+                                                </button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

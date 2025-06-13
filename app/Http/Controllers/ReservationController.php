@@ -16,9 +16,7 @@ class ReservationController extends Controller
         $regionalDevices = RegionalDevice::latest()->paginate(8);
 
         $query = Reservation::with(['user', 'guestCategory', 'guestPurpose', 'fieldPurpose'])
-            ->when(Auth::user()->hasRole('Pengunjung'), function ($query) {
-                return $query->where('user_id', Auth::id());
-            })
+            ->where('user_id', Auth::id())
             ->when($request->search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('guest_name', 'like', "%{$search}%")
