@@ -1,19 +1,19 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
 use App\Http\Controllers\Dashboard\GuestController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 
@@ -46,9 +46,8 @@ Route::prefix('reservation')->group(function () {
 });
 
 Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    })->name('dashboard.index');
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('dashboard.index');
 
     Route::prefix('/user')->middleware('super.admin')->group(function () {
         Route::get('/', [UserController::class, 'index'])
