@@ -194,7 +194,7 @@
           </li>
 
           <li>
-            <form action="{{ route('dashboard.index') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit"
                     class="flex items-center p-3 w-full rounded-lg bg-gray-200 hover:bg-red-500 dark:bg-gray-900 dark:hover:bg-red-600 transition-all">
