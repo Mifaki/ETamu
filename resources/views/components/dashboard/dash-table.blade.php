@@ -12,7 +12,13 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 @foreach($headers as $header)
                     @if($header !== 'Aksi')
-                        <td class="py-4 px-6 text-gray-900 dark:text-white">{{ $row[strtolower(str_replace(' ', '_', $header))] ?? '' }}</td>
+                        <td class="py-4 px-6 text-gray-900 dark:text-white">
+                            @if($header === 'Status')
+                                {!! $row[strtolower(str_replace(' ', '_', $header))] !!}
+                            @else
+                                {{ $row[strtolower(str_replace(' ', '_', $header))] ?? '' }}
+                            @endif
+                        </td>
                     @endif
                 @endforeach
                 <td class="py-4 px-6 flex gap-2">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
+use App\Http\Controllers\Dashboard\GuestController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -164,16 +165,22 @@ Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(fun
     });
 
     Route::prefix('/guest')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.guest.index');
-        })->name('dashboard.guest.index');
+        Route::get('/', [GuestController::class, 'index'])
+            ->name('dashboard.guest.index');
 
-        Route::get('/{id}', function () {
-            return view('dashboard.guest.show');
-        })->name('dashboard.guest.show');
+        Route::get('/{id}', [GuestController::class, 'show'])
+            ->name('dashboard.guest.show');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.guest.index')->with('success', 'Data tamu berhasil dihapus');
-        })->name('dashboard.guest.destroy');
+        Route::patch('/{id}/approve', [GuestController::class, 'approve'])
+            ->name('dashboard.guest.approve');
+
+        Route::patch('/{id}/reject', [GuestController::class, 'reject'])
+            ->name('dashboard.guest.reject');
+
+        Route::patch('/{id}/complete', [GuestController::class, 'complete'])
+            ->name('dashboard.guest.complete');
+
+        Route::delete('/{id}', [GuestController::class, 'destroy'])
+            ->name('dashboard.guest.destroy');
     });
 });
