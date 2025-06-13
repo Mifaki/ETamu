@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\FieldPurposeController;
 use App\Http\Controllers\Dashboard\GuestCategoryController;
 use App\Http\Controllers\Dashboard\GuestController;
 use App\Http\Controllers\Dashboard\GuestPurposeController;
+use App\Http\Controllers\Dashboard\QuestionnaireController;
 use App\Http\Controllers\Dashboard\RegionalDeviceController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\HomeController;
@@ -41,8 +42,8 @@ Route::prefix('reservation')->group(function () {
     Route::get('/{id}/questionnaire', [ReservationController::class, 'questionnaire'])
         ->name('reservation.questionnaire');
 
-    Route::post('/{id}/questionnaire', function ($id) {
-    })->name('reservation.questionnaire.submit');
+    Route::post('/{id}/questionnaire', [ReservationController::class, 'submitQuestionnaire'])
+        ->name('reservation.questionnaire.submit');
 });
 
 Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(function () {
@@ -150,17 +151,14 @@ Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(fun
     });
 
     Route::prefix('/questionnaire')->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.questionnaire.index');
-        })->name('dashboard.questionnaire.index');
+        Route::get('/', [QuestionnaireController::class, 'index'])
+            ->name('dashboard.questionnaire.index');
 
-        Route::get('/{id}', function () {
-            return view('dashboard.questionnaire.show');
-        })->name('dashboard.questionnaire.show');
+        Route::get('/{id}', [QuestionnaireController::class, 'show'])
+            ->name('dashboard.questionnaire.show');
 
-        Route::delete('/{id}', function () {
-            return redirect()->route('dashboard.questionnaire.index')->with('success', 'Data kuesioner berhasil dihapus');
-        })->name('dashboard.questionnaire.destroy');
+        Route::delete('/{id}', [QuestionnaireController::class, 'destroy'])
+            ->name('dashboard.questionnaire.destroy');
     });
 
     Route::prefix('/guest')->group(function () {

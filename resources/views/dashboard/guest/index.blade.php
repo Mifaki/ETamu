@@ -37,8 +37,8 @@
         }),
         'actions' => function ($row) {
             $buttons = '<a href="' . route('dashboard.guest.show', $row['id']) . 
-                      '" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-all">
-                        <i class="fas fa-eye"></i> Detail
+                      '" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-all">
+                        Show
                       </a>';
 
             if ($row['status_raw'] === 'approved') {

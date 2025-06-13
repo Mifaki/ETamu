@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Reservation extends Model
 {
@@ -57,5 +58,10 @@ class Reservation extends Model
     public function regionalDevice(): BelongsTo
     {
         return $this->belongsTo(RegionalDevice::class);
+    }
+
+    public function questionnaire(): HasOne
+    {
+        return $this->hasOne(Questionnaire::class);
     }
 }

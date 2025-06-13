@@ -3,19 +3,6 @@
 @section('title', 'Detail Kuesioner - Dashboard')
 
 @section('content')
-<?php
-    $questionnaire = [
-        'id'                => 1,
-        'nama_tamu'         => 'John Doe',
-        'email'             => 'john@example.com',
-        'pelayanan'         => 'Layanan sangat memuaskan',
-        'kebersihan'        => 'Sangat bersih',
-        'fasilitas'         => 'Fasilitas lengkap',
-        'saran_masukan'     => 'Tetap pertahankan kualitas pelayanan',
-        'tanggal_kunjungan' => '2024-10-01',
-    ];
-?>
-
 <div class="container mx-auto p-6 sm:max-w-4xl">
     <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden">
         <div class="p-8">
@@ -30,7 +17,7 @@
                             Nama Tamu
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['nama_tamu'] }}
+                            {{ $questionnaire->reservation->guest_name }}
                         </td>
                     </tr>
                     <tr class="bg-white dark:bg-gray-800">
@@ -38,7 +25,7 @@
                             Email
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['email'] }}
+                            {{ $questionnaire->reservation->email }}
                         </td>
                     </tr>
                     <tr class="bg-gray-100 dark:bg-gray-700">
@@ -46,7 +33,7 @@
                             Pelayanan
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['pelayanan'] }}
+                            {{ $questionnaire->service_rating }}
                         </td>
                     </tr>
                     <tr class="bg-white dark:bg-gray-800">
@@ -54,7 +41,7 @@
                             Kebersihan
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['kebersihan'] }}
+                            {{ $questionnaire->facility_cleanliness }}
                         </td>
                     </tr>
                     <tr class="bg-gray-100 dark:bg-gray-700">
@@ -62,7 +49,7 @@
                             Fasilitas
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['fasilitas'] }}
+                            {{ $questionnaire->facility_availability }}
                         </td>
                     </tr>
                     <tr class="bg-white dark:bg-gray-800">
@@ -70,7 +57,7 @@
                             Saran & Masukan
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['saran_masukan'] }}
+                            {{ $questionnaire->feedback }}
                         </td>
                     </tr>
                     <tr class="bg-gray-100 dark:bg-gray-700">
@@ -78,7 +65,7 @@
                             Tanggal Kunjungan
                         </td>
                         <td class="px-6 py-4 text-gray-900 dark:text-white">
-                            {{ $questionnaire['tanggal_kunjungan'] }}
+                            {{ $questionnaire->reservation->meeting_time_start->format('d F Y H:i') }}
                         </td>
                     </tr>
                 </tbody>

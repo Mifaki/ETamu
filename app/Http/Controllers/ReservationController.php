@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\FieldPurpose;
 use App\Models\GuestCategory;
 use App\Models\GuestPurpose;
+use App\Models\Questionnaire;
 use App\Models\RegionalDevice;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
@@ -95,12 +96,36 @@ class ReservationController extends Controller
         return view('reservation.show', compact('reservation'));
     }
 
-    public function questionnaire(Reservation $reservation)
+    public function questionnaire(Reservation $id)
     {
-        if (Auth::user()->hasRole('Pengunjung') && $reservation->user_id !== Auth::id()) {
-            abort(403);
+        if ($id->questionnaire) {
+            return redirect()->route('reservation.show', $id->id)
+                ->with('error', 'Anda sudah mengisi kuesioner untuk reservasi ini.');
         }
 
-        return view('reservation.questionnaire', compact('reservation'));
+        return view('reservation.questionnaire', [
+            'reservation' => $id,
+        ]);
+    }
+
+    public function submitQuestionnaire(Reservation $id)
+    {
+        if ($id->questionnaire) {
+            return redirect()->route('reservation.show', $id->id)
+                ->with('error', 'Anda sudah mengisi kuesioner untuk reservasi ini.');
+        }
+
+        $validated = request()->validate([
+            'service_rating'        => 'required|string',
+            'facility_cleanliness'  => 'required|string',
+            'facility_availability' => 'required|string',
+            'feedback'              => 'required|string|max:1000',
+        ]);
+
+        $questionnaire = new Questionnaire($validated);
+        $id->questionnaire()->save($questionnaire);
+
+        return redirect()->route('reservation.show', $id->id)
+            ->with('success', 'Terima kasih! Kuesioner Anda telah berhasil disimpan.');
     }
 }
