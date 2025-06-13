@@ -2,23 +2,6 @@
 
 ETamu is a guest reservation and management system designed to streamline the visit management process in government institutions. The system allows guests to make online reservations and provide feedback through questionnaires after their visits.
 
-## Key Features
-
-### For Guests
-- Online visit reservation
-- Flexible visit time selection
-- Post-visit questionnaire
-- Reservation status notifications
-- Visit history
-
-### For Admin
-- Reservation management dashboard
-- Guest category management
-- Field purpose management
-- Regional device management
-- Questionnaire and feedback management
-- Visit reports
-
 ## Technology Stack
 
 - **Backend**: PHP 8.x, Laravel 10.x
@@ -38,7 +21,7 @@ ETamu is a guest reservation and management system designed to streamline the vi
 
 1. Clone repository
 ```bash
-git clone https://github.com/yourusername/etamu.git
+git clone https://github.com/Mifaki/ETamu.git
 cd etamu
 ```
 
@@ -81,14 +64,7 @@ php artisan serve
 
 8. Access the application
 - Open your browser and navigate to `http://localhost:8000`
-- Login with default credentials:
-  - Admin:
-    - Email: admin@etamu.com
-    - Password: password
-  - Guest:
-    - Email: guest@etamu.com
-    - Password: password
-
+  
 ## Database Structure
 
 ### Main Tables
@@ -123,10 +99,6 @@ php artisan serve
 3. View and analyze questionnaires
 4. Manage master data (categories, purposes, etc.)
 
-## Seeded Data
-
-The system comes with pre-seeded data for testing and initial setup:
-
 ### Users and Roles
 The system includes three roles with different permissions:
 
@@ -134,7 +106,6 @@ The system includes three roles with different permissions:
    - Email: superadmin@example.com
    - Username: superadmin
    - Password: password123
-   - Has all system permissions
 
 2. **Admin OPD** (Regional Device Admin)
    - Email: adminopd1@opd.com
@@ -143,54 +114,8 @@ The system includes three roles with different permissions:
    - Email: operator1@opd.com
    - Username: operator1
    - Password: password123
-   - Permissions:
-     - Manage reservations
-     - Manage regional devices
-     - Manage guest categories
-     - Manage guest purposes
-     - Manage field purposes
-     - View questionnaires
-     - View guests
 
 3. **Pengunjung** (Guest)
    - Email: pengunjung@example.com
    - Username: pengunjung1
    - Password: password123
-   - Permissions:
-     - View questionnaires
-     - View guests
-
-### Available Permissions
-- Manage users
-- Manage reservations
-- Manage regional devices
-- Manage guest categories
-- Manage guest purposes
-- Manage field purposes
-- View questionnaires
-- View guests
-
-### Master Data
-The system also includes pre-seeded master data for:
-- Guest Categories
-- Guest Purposes
-- Field Purposes
-- Regional Devices
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-Name - [@yourusername](https://github.com/yourusername)
-
-Project Link: [https://github.com/yourusername/etamu](https://github.com/yourusername/etamu)
