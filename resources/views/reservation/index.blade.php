@@ -52,7 +52,7 @@
                     <div class="w-full md:w-1/2">
                         <form action="{{ route('reservation.index') }}" method="GET" class="flex gap-2">
                             <input type="text" name="search" value="{{ request('search') }}"
-                                class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white w-full"
                                 placeholder="Cari reservasi...">
                             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                                 Cari

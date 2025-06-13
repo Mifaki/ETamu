@@ -13,6 +13,10 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
+        if (! Auth::check()) {
+            return view('reservation.guest');
+        }
+
         $regionalDevices = RegionalDevice::latest()->paginate(8);
 
         $query = Reservation::with(['user', 'guestCategory', 'guestPurpose', 'fieldPurpose'])
