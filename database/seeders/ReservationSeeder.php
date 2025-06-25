@@ -37,6 +37,8 @@ class ReservationSeeder extends Seeder
                 'address'            => 'Jl. Merdeka No. 123, Tigaraksa, Kabupaten Tangerang',
                 'reservation_type'   => 'individual',
                 'status'             => 'pending',
+                'reservation_code' => \App\Models\Reservation::generateUniqueCode(),
+                'is_checked_in'    => false,
             ],
             [
                 'user_id'            => $adminOPD->id,
@@ -53,6 +55,8 @@ class ReservationSeeder extends Seeder
                 'address'            => 'Jl. Pendidikan No. 45, Tigaraksa, Kabupaten Tangerang',
                 'reservation_type'   => 'organization',
                 'status'             => 'approved',
+                'reservation_code' => \App\Models\Reservation::generateUniqueCode(),
+                'is_checked_in'    => false,
             ],
             [
                 'user_id'            => $visitorUser->id,
@@ -69,6 +73,8 @@ class ReservationSeeder extends Seeder
                 'address'            => 'Jl. Industri No. 78, Tigaraksa, Kabupaten Tangerang',
                 'reservation_type'   => 'organization',
                 'status'             => 'pending',
+                'reservation_code' => \App\Models\Reservation::generateUniqueCode(),
+                'is_checked_in'    => false,
             ],
             [
                 'user_id'            => $adminOPD->id,
@@ -85,6 +91,8 @@ class ReservationSeeder extends Seeder
                 'address'            => 'Jl. Masyarakat No. 90, Tigaraksa, Kabupaten Tangerang',
                 'reservation_type'   => 'organization',
                 'status'             => 'rejected',
+                'reservation_code' => \App\Models\Reservation::generateUniqueCode(),
+                'is_checked_in'    => false,
             ],
             [
                 'user_id'            => $visitorUser->id,
@@ -100,6 +108,8 @@ class ReservationSeeder extends Seeder
                 'address'            => 'Jl. Kesehatan No. 56, Tigaraksa, Kabupaten Tangerang',
                 'reservation_type'   => 'individual',
                 'status'             => 'completed',
+                'reservation_code' => \App\Models\Reservation::generateUniqueCode(),
+                'is_checked_in'    => false,
             ],
         ];
 
