@@ -10,7 +10,7 @@
                     <div
                         class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
                         @if ($device->logo_path)
-                            <img class="w-[50%] mx-auto object-contain" src="{{ asset('storage/' . $device->logo_path) }}"
+                            <img class="w-[50%] mx-auto object-contain" src="{{ asset($device->logo_path) }}"
                                 alt="{{ $device->name }}">
                         @else
                             <div class="w-[50%] mx-auto h-24 bg-gray-200 rounded-lg flex items-center justify-center">
@@ -122,7 +122,7 @@
                                                 <button
                                                     class="text-center text-white bg-blue-600 px-8 py-2 rounded-lg md:rounded-full">
                                                     <a
-                                                        href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri-nilai</a>
+                                                        href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri nilai</a>
                                                 </button>
                                             @endif
                                         </div>

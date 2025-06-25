@@ -36,6 +36,12 @@ Route::prefix('reservation')->group(function () {
     Route::post('/store', [ReservationController::class, 'store'])
         ->name('reservation.store');
 
+    Route::post('/lookup', [ReservationController::class, 'lookup'])
+        ->name('reservation.lookup');
+
+    Route::post('/checkin', [ReservationController::class, 'checkIn'])
+        ->name('reservation.checkin');
+
     Route::get('/{id}', [ReservationController::class, 'show'])
         ->name('reservation.show');
 
