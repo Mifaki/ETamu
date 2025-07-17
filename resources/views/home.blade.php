@@ -11,10 +11,10 @@
                     DATANG
                 </h1>
                 <p class="text-xl md:text-xl mb-8 md:mb-16 text-black dark:text-white">
-                    Penerimaan kunjungan kerja di Pemerintah kabupaten Tangerang.
+                    Penerimaan kunjungan kerja di Pemerintahan Kabupaten Tangerang.
                 </p>
                 <button class="text-white font-semibold text-sm md:text-lg bg-green-600 px-5 py-3 rounded-full mr-1 md:mr-3">
-                    <a href="#">Reservasi Sekarang</a>
+                    <a href="{{ route('reservation.index') }}">Reservasi Sekarang</a>
                 </button>
                 <button class="text-white font-semibold text-sm md:text-lg bg-blue-600 px-5 py-3 rounded-full">
                     <a href="https://www.youtube.com/watch?v=9lYyyUXoae0">Video Tutorial</a>

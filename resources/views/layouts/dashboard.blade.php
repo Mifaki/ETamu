@@ -118,7 +118,7 @@
                 <a
                   href={{  route('dashboard.users.index') }}
                   class="flex items-center p-3 rounded-lg pl-12 bg-gray-200 dark:bg-gray-900 hover:bg-teal-500 dark:hover:bg-teal-600 transition-all"
-                  >Managment User</a
+                  >Management User</a
                 >
               </li>
               <li>

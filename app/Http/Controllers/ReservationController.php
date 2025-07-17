@@ -15,27 +15,40 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
-        if (! Auth::check()) {
-            return view('reservation.guest');
-        }
-
         $regionalDevices = RegionalDevice::latest()->paginate(8);
 
-        $query = Reservation::with(['user', 'guestCategory', 'guestPurpose', 'fieldPurpose'])
-            ->where('user_id', Auth::id())
-            ->when($request->search, function ($query, $search) {
-                return $query->where(function ($q) use ($search) {
-                    $q->where('guest_name', 'like', "%{$search}%")
-                        ->orWhere('organization', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%")
-                        ->orWhere('phone_number', 'like', "%{$search}%");
-                });
-            })
-            ->latest();
+        // For logged-in users, show their reservations
+        if (Auth::check()) {
+            $query = Reservation::with(['user', 'guestCategory', 'guestPurpose', 'fieldPurpose'])
+                ->where('user_id', Auth::id())
+                ->when($request->search, function ($query, $search) {
+                    return $query->where(function ($q) use ($search) {
+                        $q->where('guest_name', 'like', "%{$search}%")
+                            ->orWhere('organization', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('phone_number', 'like', "%{$search}%");
+                    });
+                })
+                ->latest();
 
-        $reservations = $query->paginate(10)->withQueryString();
+            $reservations = $query->paginate(10)->withQueryString();
+            
+            return view('reservation.index', compact('regionalDevices', 'reservations'));
+        }
 
-        return view('reservation.index', compact('regionalDevices', 'reservations'));
+        // For anonymous users, show reservation lookup form
+        $reservation = null;
+        if ($request->has('reservation_code') && $request->reservation_code) {
+            $reservation = Reservation::with(['guestCategory', 'guestPurpose', 'fieldPurpose', 'regionalDevice'])
+                ->where('reservation_code', strtoupper($request->reservation_code))
+                ->first();
+            
+            if (!$reservation) {
+                return back()->with('error', 'Kode reservasi tidak ditemukan.');
+            }
+        }
+
+        return view('reservation.guest', compact('regionalDevices', 'reservation'));
     }
 
     public function create()
@@ -68,8 +81,11 @@ class ReservationController extends Controller
             'notes'                 => 'nullable|string',
         ]);
 
-        $reservation          = new Reservation($validated);
-        $reservation->user_id = Auth::id();
+        $reservation = new Reservation($validated);
+        
+        if (Auth::check()) {
+            $reservation->user_id = Auth::id();
+        }
 
         if ($request->hasFile('id_card')) {
             $reservation->id_card_path = $request->file('id_card')->store('id-cards', 'public');
@@ -89,22 +105,62 @@ class ReservationController extends Controller
             ->with('success', 'Reservasi berhasil dibuat');
     }
 
-    public function show($id)
+    public function show($codeOrId)
     {
-        $reservation = Reservation::with(['user', 'guestCategory', 'guestPurpose', 'fieldPurpose'])
-            ->findOrFail($id);
+        $reservation = Reservation::with(['user', 'guestCategory', 'guestPurpose', 'fieldPurpose', 'regionalDevice'])
+            ->where('reservation_code', strtoupper($codeOrId))
+            ->orWhere('id', $codeOrId)
+            ->firstOrFail();
 
-        if (Auth::user()->hasRole('Pengunjung') && $reservation->user_id !== Auth::id()) {
-            abort(403);
+        if (Auth::check() && $reservation->user_id && $reservation->user_id !== Auth::id()) {
+            if (Auth::user()->hasRole('Pengunjung')) {
+                abort(403);
+            }
         }
 
         return view('reservation.show', compact('reservation'));
     }
 
+    public function lookup(Request $request)
+    {
+        $request->validate([
+            'reservation_code' => 'required|string|exists:reservations,reservation_code'
+        ]);
+
+        $reservation = Reservation::with(['guestCategory', 'guestPurpose', 'fieldPurpose', 'regionalDevice'])
+            ->where('reservation_code', strtoupper($request->reservation_code))
+            ->firstOrFail();
+
+        return view('reservation.show', compact('reservation'));
+    }
+
+    public function checkIn(Request $request)
+    {
+        $request->validate([
+            'reservation_code' => 'required|string|exists:reservations,reservation_code'
+        ]);
+
+        $reservation = Reservation::where('reservation_code', strtoupper($request->reservation_code))->firstOrFail();
+
+        if ($reservation->is_checked_in) {
+            return back()->with('error', 'Anda sudah melakukan check-in untuk reservasi ini.');
+        }
+
+        if (!$reservation->canCheckIn()) {
+            return back()->with('error', 'Check-in hanya dapat dilakukan maksimal 24 jam sebelum waktu pertemuan.');
+        }
+
+        if ($reservation->checkIn()) {
+            return view('reservation.checkin-success', compact('reservation'));
+        }
+
+        return back()->with('error', 'Gagal melakukan check-in. Silakan coba lagi.');
+    }
+
     public function questionnaire(Reservation $id)
     {
         if ($id->questionnaire) {
-            return redirect()->route('reservation.show', $id->id)
+            return redirect()->route('reservation.show', $id->reservation_code)
                 ->with('error', 'Anda sudah mengisi kuesioner untuk reservasi ini.');
         }
 
@@ -116,7 +172,7 @@ class ReservationController extends Controller
     public function submitQuestionnaire(Reservation $id)
     {
         if ($id->questionnaire) {
-            return redirect()->route('reservation.show', $id->id)
+            return redirect()->route('reservation.show', $id->reservation_code)
                 ->with('error', 'Anda sudah mengisi kuesioner untuk reservasi ini.');
         }
 
@@ -130,7 +186,7 @@ class ReservationController extends Controller
         $questionnaire = new Questionnaire($validated);
         $id->questionnaire()->save($questionnaire);
 
-        return redirect()->route('reservation.show', $id->id)
+        return redirect()->route('reservation.show', $id->reservation_code)
             ->with('success', 'Terima kasih! Kuesioner Anda telah berhasil disimpan.');
     }
 

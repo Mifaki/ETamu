@@ -10,7 +10,7 @@
                     <div
                         class="label text-center text-black dark:text-white bg-white dark:bg-gray-500 h-auto max-w-full rounded-lg shadow-lg px-4 py-5">
                         @if ($device->logo_path)
-                            <img class="w-[50%] mx-auto object-contain" src="{{ asset('storage/' . $device->logo_path) }}"
+                            <img class="w-[50%] mx-auto object-contain" src="{{ asset($device->logo_path) }}"
                                 alt="{{ $device->name }}">
                         @else
                             <div class="w-[50%] mx-auto h-24 bg-gray-200 rounded-lg flex items-center justify-center">
@@ -113,16 +113,39 @@
                                         </span>
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 text-gray-800 dark:text-white">
-                                        <div class="flex space-x-2">
+                                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                                             <button
-                                                class="text-center text-white bg-green-500 px-8 py-2 rounded-lg md:rounded-full">
+                                                class="text-center text-white bg-green-500 px-4 py-2 rounded-lg">
                                                 <a href="{{ route('reservation.show', $reservation) }}">Lihat</a>
                                             </button>
-                                            @if ($reservation->status === 'completed')
+                                            
+                                            @if($reservation->canCheckIn())
+                                                <form action="{{ route('reservation.checkin') }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="reservation_code" value="{{ $reservation->reservation_code }}">
+                                                    <button type="submit" 
+                                                            class="text-center text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                                                        Absen Sekarang
+                                                    </button>
+                                                </form>
+                                            @elseif($reservation->is_checked_in)
+                                                <button disabled 
+                                                        class="text-center text-white bg-gray-400 px-4 py-2 rounded-lg cursor-not-allowed">
+                                                    Sudah Check-in
+                                                </button>
+                                            @else
+                                                <button disabled 
+                                                        class="text-center text-white bg-gray-400 px-4 py-2 rounded-lg cursor-not-allowed"
+                                                        title="Check-in hanya dapat dilakukan maksimal 24 jam sebelum waktu pertemuan">
+                                                    Check-in Belum Tersedia
+                                                </button>
+                                            @endif
+
+                                            @if ($reservation->status === 'completed' && !$reservation->questionnaire)
                                                 <button
-                                                    class="text-center text-white bg-blue-600 px-8 py-2 rounded-lg md:rounded-full">
+                                                    class="text-center text-white bg-purple-600 px-4 py-2 rounded-lg">
                                                     <a
-                                                        href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri-nilai</a>
+                                                        href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri nilai</a>
                                                 </button>
                                             @endif
                                         </div>
@@ -146,4 +169,25 @@
             </div>
         </div>
     </section>
+
+    @if(session('error'))
+        <div class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50" id="error-message">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50" id="success-message">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <script>
+        setTimeout(function() {
+            const errorMsg = document.getElementById('error-message');
+            const successMsg = document.getElementById('success-message');
+            if (errorMsg) errorMsg.style.display = 'none';
+            if (successMsg) successMsg.style.display = 'none';
+        }, 5000);
+    </script>
 @endsection
