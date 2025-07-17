@@ -32,6 +32,7 @@ class Reservation extends Model
         'status',
         'checked_in_at',
         'is_checked_in',
+        'canceled_notes',
     ];
 
     protected $casts = [
@@ -44,7 +45,7 @@ class Reservation extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($reservation) {
             if (empty($reservation->reservation_code)) {
                 $reservation->reservation_code = static::generateUniqueCode();
@@ -57,7 +58,7 @@ class Reservation extends Model
         do {
             $code = strtoupper(Str::random(8));
         } while (static::where('reservation_code', $code)->exists());
-        
+
         return $code;
     }
 
@@ -67,9 +68,9 @@ class Reservation extends Model
             return false;
         }
 
-        $now = now();
+        $now         = now();
         $meetingTime = $this->meeting_time_start;
-        
+
         return $now->diffInHours($meetingTime, false) <= 24 && $meetingTime->isFuture();
     }
 

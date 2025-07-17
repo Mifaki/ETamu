@@ -21,6 +21,7 @@
                 'approved' => '<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Disetujui</span>',
                 'rejected' => '<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Ditolak</span>',
                 'completed' => '<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Selesai</span>',
+                'canceled' => '<span class="bg-red-200 text-red-500 text-xs font-medium px-2.5 py-0.5 rounded">Dibatalkan</span>',
                 default => '<span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">Unknown</span>'
             };
 

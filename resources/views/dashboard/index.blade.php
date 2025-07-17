@@ -46,12 +46,11 @@
 
                 window.Echo.channel('dashboard-updates')
                     .subscribed(() => {
-                        console.log('Successfully subscribed to dashboard-updates channel');
+                        console.log('Successfully subscribed channel');
                     })
                     .listen('.reservation.created', (e) => { 
-                        console.log('New reservation created:', e);
 
-                        updateDashboardStats(e.stats);
+                        updateDashboardStats(   e.stats);
 
                         showNotification(e.reservation);
 

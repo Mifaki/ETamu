@@ -32,7 +32,7 @@ class ReservationController extends Controller
                 ->latest();
 
             $reservations = $query->paginate(10)->withQueryString();
-            
+
             return view('reservation.index', compact('regionalDevices', 'reservations'));
         }
 
@@ -42,8 +42,8 @@ class ReservationController extends Controller
             $reservation = Reservation::with(['guestCategory', 'guestPurpose', 'fieldPurpose', 'regionalDevice'])
                 ->where('reservation_code', strtoupper($request->reservation_code))
                 ->first();
-            
-            if (!$reservation) {
+
+            if (! $reservation) {
                 return back()->with('error', 'Kode reservasi tidak ditemukan.');
             }
         }
@@ -82,7 +82,7 @@ class ReservationController extends Controller
         ]);
 
         $reservation = new Reservation($validated);
-        
+
         if (Auth::check()) {
             $reservation->user_id = Auth::id();
         }
@@ -124,7 +124,7 @@ class ReservationController extends Controller
     public function lookup(Request $request)
     {
         $request->validate([
-            'reservation_code' => 'required|string|exists:reservations,reservation_code'
+            'reservation_code' => 'required|string|exists:reservations,reservation_code',
         ]);
 
         $reservation = Reservation::with(['guestCategory', 'guestPurpose', 'fieldPurpose', 'regionalDevice'])
@@ -137,7 +137,7 @@ class ReservationController extends Controller
     public function checkIn(Request $request)
     {
         $request->validate([
-            'reservation_code' => 'required|string|exists:reservations,reservation_code'
+            'reservation_code' => 'required|string|exists:reservations,reservation_code',
         ]);
 
         $reservation = Reservation::where('reservation_code', strtoupper($request->reservation_code))->firstOrFail();
@@ -146,7 +146,7 @@ class ReservationController extends Controller
             return back()->with('error', 'Anda sudah melakukan check-in untuk reservasi ini.');
         }
 
-        if (!$reservation->canCheckIn()) {
+        if (! $reservation->canCheckIn()) {
             return back()->with('error', 'Check-in hanya dapat dilakukan maksimal 24 jam sebelum waktu pertemuan.');
         }
 
@@ -188,6 +188,32 @@ class ReservationController extends Controller
 
         return redirect()->route('reservation.show', $id->reservation_code)
             ->with('success', 'Terima kasih! Kuesioner Anda telah berhasil disimpan.');
+    }
+
+    public function cancel(Request $request, $id)
+    {
+        $request->validate([
+            'canceled_notes' => 'required|string|max:255',
+        ]);
+
+        $reservation = Reservation::findOrFail($id);
+
+        if (! Auth::check() || $reservation->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $now          = \Carbon\Carbon::now();
+        $meetingStart = \Carbon\Carbon::parse($reservation->meeting_time_start);
+        if ($now->diffInDays($meetingStart, false) === 1 && $now->isSameDay($meetingStart->copy()->subDay())) {
+            return redirect()->back()->with('error', 'Pembatalan tidak dapat dilakukan sehari sebelum waktu pertemuan.');
+        }
+
+        $reservation->status         = 'canceled';
+        $reservation->canceled_notes = $request->input('canceled_notes');
+        $reservation->save();
+
+        return redirect()->route('reservation.show', $reservation->id)
+            ->with('success', 'Reservation has been canceled.');
     }
 
     private function calculateDashboardStats(): array

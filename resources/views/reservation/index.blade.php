@@ -108,8 +108,17 @@
                                                                         ? 'bg-green-100 text-green-800'
                                                                         : ($reservation->status === 'rejected'
                                                                             ? 'bg-red-100 text-red-800'
-                                                                            : 'bg-gray-100 text-gray-800')) }}">
-                                            {{ ucfirst($reservation->status) }}
+                                                                            : ($reservation->status === 'canceled'
+                                                                                ? 'bg-red-200 text-red-800'
+                                                                                : 'bg-gray-100 text-gray-800'))) }}">
+                                            {{ match($reservation->status) {
+                                                'pending' => 'Menunggu',
+                                                'approved' => 'Disetujui',
+                                                'rejected' => 'Ditolak',
+                                                'completed' => 'Selesai',
+                                                'canceled' => 'Dibatalkan',
+                                                default => ucfirst($reservation->status),
+                                            } }}
                                         </span>
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 text-gray-800 dark:text-white">
@@ -147,6 +156,45 @@
                                                     <a
                                                         href="{{ route('reservation.questionnaire', ['id' => $reservation->id]) }}">Beri nilai</a>
                                                 </button>
+                                            @endif
+                                            @if ($reservation->status === 'pending')
+                                                @php
+                                                    $disableCancel = false;
+                                                    $now = \Carbon\Carbon::now();
+                                                    $meetingStart = \Carbon\Carbon::parse($reservation->meeting_time_start);
+                                                    $disableCancel = $now->diffInDays($meetingStart, false) === 1 && $now->isSameDay($meetingStart->copy()->subDay());
+                                                @endphp
+                                                <button
+                                                    class="text-center text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200"
+                                                    data-modal-target="cancel-modal-{{ $reservation->id }}"
+                                                    data-modal-toggle="cancel-modal-{{ $reservation->id }}"
+                                                    @if($disableCancel) disabled class="opacity-50 cursor-not-allowed" @endif
+                                                >
+                                                    Batalkan
+                                                </button>
+
+                                                <div id="cancel-modal-{{ $reservation->id }}" tabindex="-1" aria-hidden="true" style="display:none;" class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full flex items-center justify-center bg-black bg-opacity-50">
+                                                    <div class="relative w-full max-w-md h-full md:h-auto">
+                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                            <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center close-cancel-modal" data-modal-hide="cancel-modal-{{ $reservation->id }}">
+                                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                                <span class="sr-only">Close modal</span>
+                                                            </button>
+                                                            <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST" class="p-6">
+                                                                @csrf
+                                                                <h3 class="mb-4 text-lg font-medium text-gray-900 dark:text-white">Batalkan Reservasi</h3>
+                                                                <div class="mb-4">
+                                                                    <label for="canceled_notes_{{ $reservation->id }}" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Alasan Pembatalan</label>
+                                                                    <textarea id="canceled_notes_{{ $reservation->id }}" name="canceled_notes" rows="3" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white p-2"></textarea>
+                                                                </div>
+                                                                <div class="flex justify-end">
+                                                                    <button type="button" class="mr-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg close-cancel-modal" data-modal-hide="cancel-modal-{{ $reservation->id }}">Batal</button>
+                                                                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Kirim</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
                                     </td>
@@ -189,5 +237,30 @@
             if (errorMsg) errorMsg.style.display = 'none';
             if (successMsg) successMsg.style.display = 'none';
         }, 5000);
+
+        // Modal logic
+        document.querySelectorAll('[data-modal-toggle]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const target = document.getElementById(this.getAttribute('data-modal-target'));
+                if (target) target.style.display = 'flex';
+            });
+        });
+        document.querySelectorAll('.close-cancel-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-hide');
+                const modal = document.getElementById(modalId);
+                if (modal) modal.style.display = 'none';
+            });
+        });
+        // Prevent form submit if textarea is empty
+        document.querySelectorAll('form[action*="reservation/cancel"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const textarea = this.querySelector('textarea[name="canceled_notes"]');
+                if (!textarea.value.trim()) {
+                    textarea.classList.add('border-red-500');
+                    e.preventDefault();
+                }
+            });
+        });
     </script>
 @endsection
