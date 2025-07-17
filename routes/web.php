@@ -174,6 +174,9 @@ Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(fun
         Route::get('/', [GuestController::class, 'index'])
             ->name('dashboard.guest.index');
 
+        Route::post('/export', [GuestController::class, 'export'])
+            ->name('dashboard.guest.export');
+
         Route::get('/{id}', [GuestController::class, 'show'])
             ->name('dashboard.guest.show');
 
