@@ -42,7 +42,7 @@ Route::prefix('reservation')->group(function () {
     Route::post('/checkin', [ReservationController::class, 'checkIn'])
         ->name('reservation.checkin');
 
-    Route::post('/{id}/cancel', [ReservationController::class, 'cancel'])
+    Route::post('/{reservation_code}/cancel', [ReservationController::class, 'cancel'])
         ->name('reservation.cancel');
 
     Route::get('/{id}', [ReservationController::class, 'show'])

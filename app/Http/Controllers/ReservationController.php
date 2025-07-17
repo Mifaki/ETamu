@@ -190,17 +190,13 @@ class ReservationController extends Controller
             ->with('success', 'Terima kasih! Kuesioner Anda telah berhasil disimpan.');
     }
 
-    public function cancel(Request $request, $id)
+    public function cancel(Request $request, $reservation_code)
     {
         $request->validate([
             'canceled_notes' => 'required|string|max:255',
         ]);
 
-        $reservation = Reservation::findOrFail($id);
-
-        if (! Auth::check() || $reservation->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
-        }
+        $reservation = Reservation::where('reservation_code', strtoupper($reservation_code))->firstOrFail();
 
         $now          = \Carbon\Carbon::now();
         $meetingStart = \Carbon\Carbon::parse($reservation->meeting_time_start);
@@ -212,7 +208,7 @@ class ReservationController extends Controller
         $reservation->canceled_notes = $request->input('canceled_notes');
         $reservation->save();
 
-        return redirect()->route('reservation.show', $reservation->id)
+        return redirect()->route('reservation.show', $reservation->reservation_code)
             ->with('success', 'Reservation has been canceled.');
     }
 
