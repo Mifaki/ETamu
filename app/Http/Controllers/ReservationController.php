@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\ReservationCreated;
 use App\Models\FieldPurpose;
 use App\Models\GuestCategory;
 use App\Models\GuestPurpose;
@@ -80,6 +81,10 @@ class ReservationController extends Controller
 
         $reservation->save();
 
+        $dashboardStats = $this->calculateDashboardStats();
+
+        event(new ReservationCreated($reservation, $dashboardStats));
+
         return redirect()->route('reservation.show', $reservation)
             ->with('success', 'Reservasi berhasil dibuat');
     }
@@ -127,5 +132,20 @@ class ReservationController extends Controller
 
         return redirect()->route('reservation.show', $id->id)
             ->with('success', 'Terima kasih! Kuesioner Anda telah berhasil disimpan.');
+    }
+
+    private function calculateDashboardStats(): array
+    {
+        return [
+            'totalGuests'           => Reservation::count(),
+            'totalGuestCategories'  => GuestCategory::count(),
+            'uniqueGuestPurposes'   => Reservation::select('guest_purpose_id')->distinct()->count('guest_purpose_id'),
+            'uniqueFieldPurposes'   => Reservation::select('field_purpose_id')->distinct()->count('field_purpose_id'),
+            'mostVisitedFieldCount' => Reservation::select('field_purpose_id')
+                ->groupBy('field_purpose_id')
+                ->orderByRaw('COUNT(*) DESC')
+                ->limit(1)
+                ->count(),
+        ];
     }
 }
