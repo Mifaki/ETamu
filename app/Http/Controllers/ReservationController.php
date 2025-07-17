@@ -101,8 +101,7 @@ class ReservationController extends Controller
 
         event(new ReservationCreated($reservation, $dashboardStats));
 
-        return redirect()->route('reservation.show', $reservation)
-            ->with('success', 'Reservasi berhasil dibuat');
+        return redirect()->route('reservation.success', $reservation->reservation_code);
     }
 
     public function show($codeOrId)
@@ -210,6 +209,12 @@ class ReservationController extends Controller
 
         return redirect()->route('reservation.show', $reservation->reservation_code)
             ->with('success', 'Reservation has been canceled.');
+    }
+
+    public function success($reservation_code)
+    {
+        $reservation = Reservation::where('reservation_code', strtoupper($reservation_code))->firstOrFail();
+        return view('reservation.success', compact('reservation'));
     }
 
     private function calculateDashboardStats(): array

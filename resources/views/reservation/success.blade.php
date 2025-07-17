@@ -32,9 +32,9 @@
                             Simpan kode ini untuk check-in nanti
                         </p>
                         
-                        <button onclick="copyReservationCode()" 
+                        <button onclick="copyReservationCode(event)" 
                                 class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 text-sm">
-                            📋 Salin Kode
+                            Salin Kode
                         </button>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
     </section>
 
     <script>
-        function copyReservationCode() {
+        function copyReservationCode(event) {
             const code = '{{ $reservation->reservation_code }}';
             navigator.clipboard.writeText(code).then(function() {
                 const button = event.target;

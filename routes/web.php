@@ -53,6 +53,9 @@ Route::prefix('reservation')->group(function () {
 
     Route::post('/{id}/questionnaire', [ReservationController::class, 'submitQuestionnaire'])
         ->name('reservation.questionnaire.submit');
+
+    Route::get('/{reservation_code}/success', [ReservationController::class, 'success'])
+        ->name('reservation.success');
 });
 
 Route::prefix('/dashboard')->middleware(['auth', 'dashboard.access'])->group(function () {
